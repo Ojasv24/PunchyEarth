@@ -1,11 +1,11 @@
-import pygame
 import math
+import pygame
 import pymunk
 
 
 class Punch(pygame.sprite.Sprite):
 
-    def __init__(self, pos_x, pos_y, space) -> None:
+    def __init__(self, space) -> None:
         super().__init__()
         self.sprites = []
         self.sprites.append(pygame.image.load('1.png'))
@@ -17,68 +17,83 @@ class Punch(pygame.sprite.Sprite):
         for i in range(len(self.sprites)):
             self.sprites[i] = pygame.transform.scale(self.sprites[i], (50, 90))
 
-        # pygame
-        self.vel = 10
-        self.dx = 0
-        self.dy = 0
-        self.prevx = pos_x
-        self.prevy = pos_y
-        self.distance = 0
-        self.punchAngle = 0
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect()
-        self.rect.center = [pos_x, pos_y]
-
-        # pymuck
+        self.rect.center = [100, 100]
+        self.sprite_angle = 0
+        
+        self.vertices = [(20, 10), (10, 10), (10, 10)]
         self.body = pymunk.Body()
-        self.body.position = pos_x, pos_y
-        self.body.moment = 1
-        self.body.velocity = 100, 100
-        w, h = self.rect.right - self.rect.left, self.rect.bottom - self.rect.top
-        self.vs = [(0, 0), (w, 0), (w, h), (0, h)]
-        self.shape = pymunk.Poly(self.body, self.vs)
-        self.shape.elasticity = 1
-        self.shape.density = 5
-        self.shape.collision_type = 1
+        self.body.position = (300, 300)
+        self.body.mass = 10
+        self.body.moment = 100
+        self.mousePos = 0, 0
+        
+        sh, sw = self.sprites[0].get_width(), self.sprites[0].get_height()
+        self.body.velocity_func = self.limit_velocity
+        self.shape = pymunk.Poly.create_box(self.body, (sw, sh))
+        # self.shape.elasticity = 5
+        self.shape.density = 100
+        self.shape.collision_type = 1 
+        
         space.add(self.body, self.shape)
 
-    def angle(self):
+    def limit_velocity(self, body, gravity, damping, dt):
+        max_velocity = 200
+        pymunk.Body.update_velocity(body, gravity, 0.9, dt)
+        l = body.velocity.length
+        if l > max_velocity:
+            scale = max_velocity / l
+            body.velocity = body.velocity * scale
+
+    
+    def returnBack(self):
+        self.mousePos = 640, 360
+        mouse_pos = 640, 360
+        mouse_pos = mouse_pos - self.body.position
+        newangle = math.atan2(mouse_pos[1], -mouse_pos[0])
+        self.sprite_angle = math.degrees(newangle)
+        
+
+    def cal_angel(self):
         mouse_pos = pygame.mouse.get_pos()
-        mouse_posX = mouse_pos[0]
-        mouse_posY = mouse_pos[1]
-        mouse_posX = mouse_posX - self.body.position[0]
-        mouse_posY = mouse_posY - self.body.position[1]
+        self.mousePos = mouse_pos
+        mouse_pos = mouse_pos - self.body.position
+        newangle = math.atan2(mouse_pos[1], -mouse_pos[0])
+        self.sprite_angle = math.degrees(newangle)
+    
+    def update(self):
 
-        newangle = math.atan2(mouse_posY, -mouse_posX)
-        newangle1 = math.atan2(mouse_posY, mouse_posX)
-        self.punchAngle = math.degrees(newangle)
-        self.distance = int(math.hypot(
-            mouse_pos[0] - self.rect.centerx, mouse_pos[1] - self.rect.centery) / self.vel)
-        self.dx = math.cos(newangle1) * self.vel
-        self.dy = math.sin(newangle1) * self.vel
 
-    def move(self):
-        if self.distance:
-            self.distance -= 1
-            self.prevx += self.dx
-            self.prevy += self.dy
-
-    def update(self, pos_x, pos_y):
-        pass
-        # animation
         self.current_sprite += 0.25
         if self.current_sprite >= len(self.sprites):
             self.current_sprite = 0
 
         self.image = self.sprites[int(self.current_sprite)]
-        self.image = pygame.transform.rotate(self.image, self.punchAngle + 90)
+        self.image = pygame.transform.rotate(self.image, self.sprite_angle + 90)
         self.rect = self.image.get_rect()
-        self.rect.centerx = self.prevx
-        self.rect.centery = self.prevy
-        # self.vs = [(self.rect.topleft[0], self.rect.topleft[1]), (self.rect.bottomleft[0], self.rect.bottomleft[1]), (self.rect.bottomright[0], self.rect.bottomright[1]), (self.rect.topright[0], self.rect.topright[1])]
-        # self.shape = pymunk.Poly(self.body, self.vs,radius=5)
-        self.body.position = self.rect.midtop[0], self.rect.midtop[1]
-        self.body.angle = self.punchAngle
-        # self.body.velocity = 100,100
-        self.move()
+        self.rect.center = self.body.position
+        
+        mx, my = self.mousePos
+        bx, by = self.body.position
+        angle = math.atan2(mx - bx, my - by)
+        self.body.angle = -(angle + math.pi / 2)
+        
+
+
+ 
+        fx, fy = math.sin(angle) * 1000000000, math.cos(angle) * 1000000000
+        self.body.apply_force_at_world_point((fx, fy), (10, 0))
+        dist = math.sqrt((mx - bx)**2 + (my - by) ** 2)
+
+        if dist < 5 and self.body.velocity[0] < 4 and self.body.velocity[1] < 4:
+            self.body.velocity = (0, 0)
+            self.body.torque = 0
+            self.body.angular_velocity = 0
+
+        vertices = []
+        for v in self.shape.get_vertices():
+            x, y = v.rotated(self.shape.body.angle) + self.shape.body.position
+            vertices.append((x, y))
+        self.vertices = vertices
