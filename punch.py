@@ -7,7 +7,6 @@ FORCE = 1000
 
 
 class Punch(pygame.sprite.Sprite):
-    # size = (50,90)
     def __init__(self, space, size: Tuple, gravityPostion: Tuple, group: int) -> None:
         super().__init__()
 
@@ -33,7 +32,8 @@ class Punch(pygame.sprite.Sprite):
         self.vertices = [(20, 10), (10, 10), (10, 10)]
         img_h, img_w = self.sprites[0].get_width(
         ), self.sprites[0].get_height()
-        self.shape = pymunk.Poly.create_box(self.body, (img_w, img_h))
+        self.shape = pymunk.Poly(self.body, [(-img_w/2.5, img_h/2), (-img_w / 2, img_h/4),
+                                 (-img_w / 2, -img_h/4), (-img_w/2.5, -img_h/2), (0, -img_h/2), (0, img_h/2)])
         self.shape.elasticity = 50
         self.shape.collision_type = 1
         self.shape.filter = pymunk.ShapeFilter(group=group)
@@ -42,6 +42,7 @@ class Punch(pygame.sprite.Sprite):
         self.targetPos = 0, 0
         self.clicked = False
         self.returning_back = True
+        self.returned = True
         self.gravityPostion = gravityPostion
 
         space.add(self.body, self.shape)
@@ -61,6 +62,7 @@ class Punch(pygame.sprite.Sprite):
     def go_to_mouse(self):
         if not self.clicked:
             self.clicked = True
+            self.returned = False
             mouse_pos = pygame.mouse.get_pos()
             self.targetPos = mouse_pos
             self.returning_back = False
@@ -82,20 +84,22 @@ class Punch(pygame.sprite.Sprite):
         self.rect.center = self.body.position
 
     def update(self):
-        mx, my = self.targetPos
         bx, by = self.body.position
+        mx, my = self.targetPos
         angle = math.atan2(mx - bx, my - by)
 
         ba = -(angle + math.pi / 2) - self.body.angle
         fx, fy = math.sin(angle) * FORCE, math.cos(angle) * FORCE
 
-        self.body.apply_force_at_world_point((fx, fy), (0, 0))
+        if not self.returned:
+            self.body.apply_force_at_world_point((fx, fy), (0, 0))
         dist = math.sqrt((mx - bx)**2 + (my - by) ** 2)
 
         if self.returning_back and dist < 50:
             self.body.velocity = (0, 0)
             self.body.position = self.gravityPostion
             self.returning_back = False
+            self.returned = True
             self.clicked = False
         elif self.clicked and dist < 50:
             self.returnBack()

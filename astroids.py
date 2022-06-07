@@ -30,16 +30,29 @@ class Astroids(pygame.sprite.Sprite):
         pygame.draw.circle(screen,
                            self.color,
                            self.body.position, self.shape.radius)
-        
-        pygame.draw.arc(screen, self.color, pygame.Rect(960 - 200, 540 - 200,
-                        400, 400), self.ass + math.pi / 2, self.ass + math.pi / 2 + 0.10, 12)
+
+        px, py = self.body.position
+        gx, gy = self.gravityPostion
+        rx, ry = px - gx, py - gy
+        angle = math.atan2(rx, ry) 
+        dist = math.sqrt(rx**2 + ry**2)
+        dist = 100 + dist * 0.1
+        fx, fy = math.sin(angle) * dist, math.cos(angle) * dist
+        pygame.draw.circle(screen,
+                           self.color,
+                           (fx + gx, fy + gy), 5)
+        # pygame.draw.arc(screen, self.color, pygame.Rect(self.gravityPostion[0] - 200, self.gravityPostion[1] - 200,
+        #                 400, 400), self.ass + math.pi / 2, self.ass + math.pi / 2 + 0.10, 12)
 
     def limit_velocity(self, body, gravity, damping, dt):
         max_velocity = 200
         pymunk.Body.update_velocity(body, gravity, 1, dt)
-        l = body.velocity.length
-        if l > max_velocity:
-            scale = max_velocity / l
+        vx, vy = body.velocity
+        if vx > max_velocity:
+            scale = max_velocity / vx
+            body.velocity = body.velocity * scale
+        if vy > max_velocity:
+            scale = max_velocity / vy
             body.velocity = body.velocity * scale
 
     def update(self):
