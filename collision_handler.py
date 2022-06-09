@@ -6,7 +6,7 @@ CollisionCallback = Callable[[pymunk.Arbiter, pymunk.Space, Any], None]
 
 PUNCH = 1
 EARTH = 2
-ASTROID = 3
+asteroid = 3
 SHEILD = 4
 
 

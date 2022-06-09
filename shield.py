@@ -20,25 +20,33 @@ def cal_points(angle, radius, num_parts):
     return points
 
 
-class Sheld(pygame.sprite.Sprite):
+class shield(pygame.sprite.Sprite):
     def __init__(self, space, postion, radius, angle) -> None:
         super().__init__()
         pygame
-        # self.image = pygame.image.load('./assets/sheld.png')
+        # self.image = pygame.image.load('./assets/shield.png')
         # self.image = pygame.transform.scale(self.image, (100,100))
         # self.rect = self.image.get_rect()
         # self.rect.center = postion
-
+        
+        #pymunk
+        
+        #body
         self.body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
-        vertices = cal_points(angle, radius, 10)
         self.body.position = postion
+        
+        #shape
+        vertices = cal_points(angle, radius, 10)
         self.shape = pymunk.Poly(
             self.body, vertices)
         self.shape.collision_type = SHEILD
         self.shape.filter = pymunk.ShapeFilter(group=1)
-        self.shape.elasticity = 500
-
-        self.health = 100
+        # self.shape.elasticity = 500
+        
+        #variable
+        self.health = 200
+        self.healthBar = self.health
+            
         space.add(self.body, self.shape)
 
     def draw(self, screen):
@@ -60,15 +68,14 @@ class Sheld(pygame.sprite.Sprite):
         self.body.angle -= 0.1
 
     def drawHealthBar(self, screen):
-        myimage = pygame.image.load("./assets/sheld_heathbar.png")
-        myimage = pygame.transform.scale(myimage, (50, 50))
+        myimage = pygame.image.load("./assets/shield_heathbar.png")
         imagerect = myimage.get_rect()
         imagerect.center = (30, 80)
         screen.blit(myimage, imagerect)
         pygame.draw.rect(screen, (205, 20, 255),
-                         pygame.Rect((60, 70), (120, 28)), 2, 3)
+                         pygame.Rect((60, 70), ((self.healthBar + 20) / 1.5, 28)), 2, 3)
         pygame.draw.rect(screen, (205, 20, 255),
-                         pygame.Rect((65, 74), (self.health, 20)))
+                         pygame.Rect((65, 74), (self.health / 1.5, 20)))
 
     def reduce_health(self, diff):
 

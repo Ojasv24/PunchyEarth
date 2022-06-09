@@ -1,7 +1,6 @@
 import pygame
 from setup import Game
-from pages import Button, Page
-
+from pages import Page
 
 pygame.init()
 pygame.mixer.init()
@@ -22,12 +21,12 @@ earthPostion = (screenSize[0] / 2, screenSize[1] / 2)
 earthGravityForce = 0.002
 earthSize = (200, 200)
 punchSize = (50, 90)
-astroidNumber = 0
+asteroidNumber = 10
 
 exit = False
 clock = pygame.time.Clock()
 
-game = Game(screenSize, earthGravityForce, earthSize, punchSize, astroidNumber)
+game = Game(screenSize, earthGravityForce, earthSize, punchSize, asteroidNumber)
 page_look = Page(screenSize)
 
 while not exit:
@@ -57,7 +56,7 @@ while not exit:
         if game.clock_time.time <= 0:
             page = 'endWin'
 
-    if page == 'endLoose':
+    if page == 'endLose':
         page_look.endPage(screen)
     if page == 'endWin':
         page_look.winPage(screen)

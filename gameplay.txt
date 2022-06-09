@@ -1,0 +1,23 @@
+Goal:
+Make the forthcoming asteroid in orbit of the earth using a rocket punch.
+
+Instructions:
+
+1. Every time an asteroid is hit by the earth, the earth will lose some of its health.
+2. Asteroid hit impact calculates the damage it deals with earth, which means the high-speed asteroid 
+deals more damage.
+3. Every time earth or punch or shield is hit by an asteroid, the timer will reset.
+4. A shield is provided to help stop the asteroid from hitting the earth.
+5. Punch once assigned to a position, it can not be reassigned until it reaches back to earth.
+
+How to Play
+
+Use your mouse to assign a position for the punch to move or hit 
+an asteroid.
+Use keys 'W' and 'A' or 'Left key' and 'Right Key' to rotate the shield.
+
+Win Condition
+
+Survive for 1 minute without:-
+1. Hitting an asteroid with the punch,
+2. getting earth or shield hit by an asteroid
