@@ -10,12 +10,14 @@ class Clock(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = position
+        self.time = 60
         self.start = time.time()
         self.font = pygame.font.Font(pygame.font.get_default_font(), 36)
 
     def drawTime(self, screen):
         end = time.time()
-        time_str = str(60 - int(end - self.start))
+        self.time = 60 - int(end - self.start)
+        time_str = str(self.time)
         text_surface = self.font.render(time_str, True, (221, 255, 31))
         screen.blit(text_surface, dest=(
             self.rect.centerx + 40, self.rect.centery - 15))

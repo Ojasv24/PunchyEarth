@@ -2,7 +2,7 @@ from numpy import mat
 import pygame
 import pymunk
 import math
-
+from pygame import gfxdraw
 from collision_handler import SHEILD
 
 
@@ -24,10 +24,10 @@ class Sheld(pygame.sprite.Sprite):
     def __init__(self, space, postion, radius, angle) -> None:
         super().__init__()
         pygame
-        self.image = pygame.image.load('./assets/sheld.png')
+        # self.image = pygame.image.load('./assets/sheld.png')
         # self.image = pygame.transform.scale(self.image, (100,100))
-        self.rect = self.image.get_rect()
-        self.rect.center = postion
+        # self.rect = self.image.get_rect()
+        # self.rect.center = postion
 
         self.body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
         vertices = cal_points(angle, radius, 10)
@@ -40,6 +40,11 @@ class Sheld(pygame.sprite.Sprite):
 
         self.health = 100
         space.add(self.body, self.shape)
+
+    def draw(self, screen):
+        if not self.health <= 0:
+            gfxdraw.filled_polygon(
+                screen, self.get_vertices(), (232, 210, 9))
 
     def get_vertices(self):
         vertices = []
@@ -65,6 +70,6 @@ class Sheld(pygame.sprite.Sprite):
         pygame.draw.rect(screen, (205, 20, 255),
                          pygame.Rect((65, 74), (self.health, 20)))
 
-    
     def reduce_health(self, diff):
+
         self.health -= diff
