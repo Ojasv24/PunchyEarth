@@ -1,7 +1,11 @@
 import math
+import time
 from typing import Tuple
 import pygame
 import pymunk
+from clock import Clock
+
+from collision_handler import PUNCH
 
 FORCE = 1000
 
@@ -11,7 +15,8 @@ class Punch(pygame.sprite.Sprite):
         super().__init__()
 
        # pygame
-        self.sprites = [pygame.image.load(f'{i}.png') for i in range(1, 7)]
+        self.sprites = [pygame.image.load(
+            f'./assets/{i}.png') for i in range(1, 7)]
         for i in range(len(self.sprites)):
             self.sprites[i] = pygame.transform.scale(self.sprites[i], size)
         self.current_sprite = 0
@@ -35,7 +40,7 @@ class Punch(pygame.sprite.Sprite):
         self.shape = pymunk.Poly(self.body, [(-img_w/2.5, img_h/2), (-img_w / 2, img_h/4),
                                  (-img_w / 2, -img_h/4), (-img_w/2.5, -img_h/2), (0, -img_h/2), (0, img_h/2)])
         self.shape.elasticity = 50
-        self.shape.collision_type = 1
+        self.shape.collision_type = PUNCH
         self.shape.filter = pymunk.ShapeFilter(group=group)
 
         # variables
@@ -117,3 +122,7 @@ class Punch(pygame.sprite.Sprite):
         self.vertices = vertices
 
         self.draw()
+
+    def returnBackAfterClick(self, clock_time: Clock):
+        clock_time.start = time.time()
+        self.returnBack()
