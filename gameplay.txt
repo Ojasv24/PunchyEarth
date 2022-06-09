@@ -12,9 +12,10 @@ deals more damage.
 
 How to Play
 
-Use your mouse to assign a position for the punch to move or hit 
+1. To play,run python main.py
+2. Use your mouse to assign a position for the punch to move or hit 
 an asteroid.
-Use keys 'W' and 'A' or 'Left key' and 'Right Key' to rotate the shield.
+3. Use keys 'W' and 'A' or 'Left key' and 'Right Key' to rotate the shield.
 
 Win Condition
 
