@@ -31,13 +31,14 @@ class Game():
                               lambda *_: pygame.mixer.Channel(1).play(pygame.mixer.Sound('./assets/punch_cut.mp3')))
 
         add_collision_handler(self.space, (EARTH, asteroid),
-                              lambda *_: self.earth_asteroid_collsion_begin(*_),
-                              lambda arbiter, space, data: self.earth.reduce_health(arbiter.shapes[1].body.kinetic_energy / 100))
+                              lambda *_: self.earth_asteroid_collsion_begin(
+                                  *_),
+                              lambda arbiter, space, data: self.earth.reduce_health(max(arbiter.shapes[1].body.kinetic_energy / 100, 10)))
 
         add_collision_handler(self.space, (SHEILD, asteroid),
                               lambda *_: self.shield_astorid_collision_begin(
                                   *_),
-                              lambda arbiter, space, data: self.shield.reduce_health(arbiter.shapes[1].body.kinetic_energy / 1000))
+                              lambda arbiter, space, data: self.shield.reduce_health(max(arbiter.shapes[1].body.kinetic_energy / 10000, 20)))
 
         self.earth_group = pygame.sprite.Group()
         self.earth = Earth(self.space, self.earthPostion, self.earthSize, 1)
@@ -45,7 +46,7 @@ class Game():
 
         # asteroids
         self.asteroid_group = pygame.sprite.Group()
-        self.genrateasteroids()
+        self.last_spawn_time = time.time()
 
         # punch
         self.punch_group = pygame.sprite.Group()
@@ -54,7 +55,7 @@ class Game():
 
         # shield
         self.shield_group = pygame.sprite.Group()
-        self.shield = shield(self.space, self.earthPostion, 150, 60)
+        self.shield = shield(self.space, self.earthPostion, 130, 60)
         self.shield_group.add(self.shield)
 
         # clock
@@ -72,8 +73,7 @@ class Game():
             self.shield.moveL()
         [asteroid.draw(screen, self.space) for asteroid in self.asteroid_group]
 
-        if len(self.asteroid_group) < self.asteroidNumber:
-            self.genrateasteroids()
+        self.genrateasteroids()
 
         self.punch_group.draw(screen)
         self.punch_group.update()
@@ -107,20 +107,31 @@ class Game():
         sheild: pymunk.Body = arbiter.shapes[0].body
         body: pymunk.Body = arbiter.shapes[1].body
         vx, vy = body.velocity
-        nx, ny = arbiter.normal
+        nx, ny = arbiter.normal * 1000
         sx, sy = sheild.position
         bx, by = body.position
-        nx, ny = bx - sx, by - sy
-        # print(nx, ny)
+        # nx, ny = bx - sx, by - sy
+
         if arbiter.is_first_contact:
-            # body.velocity = 1000 * arbiter.normal
-            body.apply_impulse_at_world_point(
-                (math.copysign(0.1, nx), math.copysign(0.1, ny)), (0, 0))
+            velx = 1000
+            vely = 1000
+            # if nx > 0:
+            #     velx = 1000
+            # if ny > 0:
+            #     vely = 1000
+            nx, ny = arbiter.normal
+            body.velocity = (nx * velx, ny * vely)
+            # print(body.velocity, arbiter.normal)
+            # body.apply_impulse_at_world_point(
+            #     velocity, (0, 0))
 
     def genrateasteroids(self):
-        for i in range(self.asteroidNumber - len(self.asteroid_group)):
-            rand_color = (random.randint(0, 255), random.randint(
-                0, 255), random.randint(0, 255))
-            asteroid = asteroids(self.space, (random.randint(-1200, 2400), random.randint(
-                -700, 1400)), self.earthPostion, self.earthGravityForce, rand_color)
-            self.asteroid_group.add(asteroid)
+        now = time.time()
+        if len(self.asteroid_group) >= self.asteroidNumber or (now - self.last_spawn_time) < 3:
+            return
+        rand_color = (random.randint(0, 255), random.randint(
+            0, 255), random.randint(0, 255))
+        asteroid = asteroids(self.space, (random.randint(-1200, 2400), random.randint(
+            -700, 1400)), self.earthPostion, self.earthGravityForce, rand_color)
+        self.asteroid_group.add(asteroid)
+        self.last_spawn_time = now

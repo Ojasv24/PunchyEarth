@@ -45,7 +45,7 @@ class shield(pygame.sprite.Sprite):
         
         #variable
         self.health = 200
-        self.healthBar = self.health
+        self.maxHealth = self.health
             
         space.add(self.body, self.shape)
 
@@ -68,14 +68,15 @@ class shield(pygame.sprite.Sprite):
         self.body.angle -= 0.1
 
     def drawHealthBar(self, screen):
-        myimage = pygame.image.load("./assets/shield_heathbar.png")
+        myimage = pygame.image.load("./assets/sheld_heathbar.png")
         imagerect = myimage.get_rect()
         imagerect.center = (30, 80)
         screen.blit(myimage, imagerect)
+        health_bar_size = 100
         pygame.draw.rect(screen, (205, 20, 255),
-                         pygame.Rect((60, 70), ((self.healthBar + 20) / 1.5, 28)), 2, 3)
+                         pygame.Rect((60, 70), (health_bar_size + 10, 28)), 2, 3)
         pygame.draw.rect(screen, (205, 20, 255),
-                         pygame.Rect((65, 74), (self.health / 1.5, 20)))
+                         pygame.Rect((65, 74), (health_bar_size * self.health / self.maxHealth, 20)))
 
     def reduce_health(self, diff):
 

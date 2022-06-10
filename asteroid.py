@@ -10,7 +10,7 @@ class asteroids(pygame.sprite.Sprite):
         super().__init__()
 
         # pygame
-        self.image = pygame.image.load('./assets/asteroid.png')
+        self.image = pygame.image.load('./assets/astroid.png')
         self.image = pygame.transform.scale(self.image, (70, 70))
         self.rect = self.image.get_rect()
         self.rect.center = postion
@@ -20,7 +20,7 @@ class asteroids(pygame.sprite.Sprite):
         # body
         self.body = pymunk.Body()
         self.body.position = postion
-        self.body.mass = 0.0001
+        self.body.mass = 0.0006
         self.body.moment = 1
 
         self.body.velocity_func = self.limit_velocity
@@ -52,14 +52,12 @@ class asteroids(pygame.sprite.Sprite):
                            (fx + gx, fy + gy), 5)
 
     def limit_velocity(self, body, gravity, damping, dt):
-        max_velocity = 200
+        max_velocity = 350
         pymunk.Body.update_velocity(body, gravity, 1, dt)
-        vx, vy = body.velocity
-        if vx > max_velocity:
-            scale = max_velocity / vx
-            body.velocity = body.velocity * scale
-        if vy > max_velocity:
-            scale = max_velocity / vy
+        # vx, vy = body.velocity
+        l = body.velocity.length
+        if l > max_velocity:
+            scale = max_velocity / l
             body.velocity = body.velocity * scale
 
     def update(self):
@@ -70,3 +68,4 @@ class asteroids(pygame.sprite.Sprite):
         fx, fy = math.sin(
             angle) * self.gravityForce, math.cos(angle) * self.gravityForce
         self.body.apply_force_at_world_point((fx, fy), (0, 0))
+       

@@ -18,7 +18,7 @@ page = 'start'
 infoObject = pygame.display.Info()
 # variables
 earthPostion = (screenSize[0] / 2, screenSize[1] / 2)
-earthGravityForce = 0.002
+earthGravityForce = 0.006
 earthSize = (200, 200)
 punchSize = (50, 90)
 asteroidNumber = 10

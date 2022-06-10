@@ -21,7 +21,7 @@ class Earth(pygame.sprite.Sprite):
         self.shape.filter = pymunk.ShapeFilter(group=group)
 
         self.health = 500
-        self.healthBar = self.health
+        self.maxHealth = self.health
 
         space.add(self.body, self.shape)
 
@@ -31,11 +31,13 @@ class Earth(pygame.sprite.Sprite):
         imagerect = myimage.get_rect()
         imagerect.center = (30, 30)
         screen.blit(myimage, imagerect)
-       
+
+        health_bar_size = 200
         pygame.draw.rect(screen, (5, 158, 28),
-                         pygame.Rect((60, 20), ((self.healthBar + 20)/2, 28)), 2, 3)
+                         pygame.Rect((60, 20), (health_bar_size + 10, 28)), 2, 3)
         pygame.draw.rect(screen, (5, 158, 28),
-                         pygame.Rect((65, 24), (self.health / 2, 20)))
+                         pygame.Rect((65, 24), (health_bar_size * self.health / self.maxHealth, 20)))
 
     def reduce_health(self, diff):
+        
         self.health -= diff

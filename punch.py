@@ -120,7 +120,6 @@ class Punch(pygame.sprite.Sprite):
             x, y = v.rotated(self.shape.body.angle) + self.shape.body.position
             vertices.append((x, y))
         self.vertices = vertices
-
         self.draw()
 
     def returnBackAfterClick(self, clock_time: Clock):
