@@ -129,9 +129,6 @@ class Game():
                   (255, 255, 0), (144, 238, 144),	(0, 250, 154), (175, 238, 238),
                   (147, 112, 219),	(221, 160, 221),	(216, 191, 216),	(255, 192, 203),
                   (0, 191, 255),	(135, 206, 250),	(245, 255, 250), (211, 211, 211)]
-        # print(len(colors))
-        # rand_color = (random.randint(0, 255), random.randint(
-        #     0, 255), random.randint(0, 255))
 
         pos = self.get_random_position()
         asteroid = asteroids(self.space, pos, self.earthPostion,
