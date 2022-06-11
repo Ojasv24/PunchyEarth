@@ -37,8 +37,20 @@ class Punch(pygame.sprite.Sprite):
         self.vertices = [(20, 10), (10, 10), (10, 10)]
         img_h, img_w = self.sprites[0].get_width(
         ), self.sprites[0].get_height()
-        self.shape = pymunk.Poly(self.body, [(-img_w/2.5, img_h/2), (-img_w / 2, img_h/4),
-                                 (-img_w / 2, -img_h/4), (-img_w/2.5, -img_h/2), (0, -img_h/2), (0, img_h/2)])
+        self.shape = pymunk.Poly(self.body, [
+            (-img_w/2.5, img_h/2),
+            (-img_w / 2.4, img_h/2.5),
+            (-img_w / 2.2, img_h/3),
+            (-img_w / 2.1, img_h/4),
+            (-img_w / 2, img_h/6),
+            (-img_w / 2, -img_h/6),
+            (-img_w / 2.1, -img_h/4),
+            (-img_w / 2.2, -img_h/3),
+            (-img_w / 2.4, -img_h/2.5),
+            (-img_w/2.5, -img_h/2), 
+            (0, -img_h/2), 
+            (0, img_h/2),
+            ])
         self.shape.elasticity = 50
         self.shape.collision_type = PUNCH
         self.shape.filter = pymunk.ShapeFilter(group=group)

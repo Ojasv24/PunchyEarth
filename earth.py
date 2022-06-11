@@ -20,7 +20,7 @@ class Earth(pygame.sprite.Sprite):
         self.shape.collision_type = EARTH
         self.shape.filter = pymunk.ShapeFilter(group=group)
 
-        self.health = 500
+        self.health = 350
         self.maxHealth = self.health
 
         space.add(self.body, self.shape)

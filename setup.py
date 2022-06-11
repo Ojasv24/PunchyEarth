@@ -21,6 +21,7 @@ class Game():
         self.earthSize = earthSize
         self.punchSize = punchSize
         self.asteroidNumber = asteroidNumber
+        self.shieldDestroyed = False
         self.space = pymunk.Space()
 
     def setup(self):
@@ -88,6 +89,9 @@ class Game():
         self.clock_group.draw(screen)
         self.clock_time.drawTime(screen)
 
+        if self.shield.health <= 0 and not self.shieldDestroyed:
+            self.destroyshield()
+            self.shieldDestroyed = True
         self.shield.draw(screen)
 
     def earth_asteroid_collsion_begin(self, arbiter, space, data):
@@ -101,37 +105,36 @@ class Game():
         self.space.remove(self.shield.shape, self.shield.body)
 
     def shield_astorid_collision_begin(self, arbiter: pymunk.Arbiter, space, data):
-        if self.shield.health <= 0:
-            self.destroyshield()
         self.clock_time.start = time.time()
-        sheild: pymunk.Body = arbiter.shapes[0].body
         body: pymunk.Body = arbiter.shapes[1].body
-        vx, vy = body.velocity
-        nx, ny = arbiter.normal * 1000
-        sx, sy = sheild.position
-        bx, by = body.position
-        # nx, ny = bx - sx, by - sy
-
         if arbiter.is_first_contact:
-            velx = 1000
-            vely = 1000
-            # if nx > 0:
-            #     velx = 1000
-            # if ny > 0:
-            #     vely = 1000
-            nx, ny = arbiter.normal
-            body.velocity = (nx * velx, ny * vely)
-            # print(body.velocity, arbiter.normal)
-            # body.apply_impulse_at_world_point(
-            #     velocity, (0, 0))
+            body.velocity = arbiter.normal * 1000
+
+    def get_random_position(self):
+        screenX, screenY = self.screenSize
+        x = random.choice([random.randint(-screenX, 0), random
+                          .randint(screenX, 2*screenX)])
+        y = random.choice([random.randint(-screenY, 0), random
+                          .randint(screenY, 2*screenY)])
+        return x, y
 
     def genrateasteroids(self):
         now = time.time()
         if len(self.asteroid_group) >= self.asteroidNumber or (now - self.last_spawn_time) < 3:
             return
-        rand_color = (random.randint(0, 255), random.randint(
-            0, 255), random.randint(0, 255))
-        asteroid = asteroids(self.space, (random.randint(-1200, 2400), random.randint(
-            -700, 1400)), self.earthPostion, self.earthGravityForce, rand_color)
+
+        colors = [(218, 165, 32),	(255, 69, 0), (124, 252, 0), (127, 255, 212), (255, 0, 255),
+                  (255, 228, 196), (0, 191, 255), (250, 128, 114), (224, 255, 255),
+                  (244, 164, 96), (255, 228, 225),	(240, 255, 255),	(255, 255, 255),
+                  (255, 255, 0), (144, 238, 144),	(0, 250, 154), (175, 238, 238),
+                  (147, 112, 219),	(221, 160, 221),	(216, 191, 216),	(255, 192, 203),
+                  (0, 191, 255),	(135, 206, 250),	(245, 255, 250), (211, 211, 211)]
+        # print(len(colors))
+        # rand_color = (random.randint(0, 255), random.randint(
+        #     0, 255), random.randint(0, 255))
+
+        pos = self.get_random_position()
+        asteroid = asteroids(self.space, pos, self.earthPostion,
+                             self.earthGravityForce, random.choice(colors))
         self.asteroid_group.add(asteroid)
         self.last_spawn_time = now

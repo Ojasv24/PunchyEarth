@@ -52,7 +52,7 @@ class asteroids(pygame.sprite.Sprite):
                            (fx + gx, fy + gy), 5)
 
     def limit_velocity(self, body, gravity, damping, dt):
-        max_velocity = 350
+        max_velocity = 320
         pymunk.Body.update_velocity(body, gravity, 1, dt)
         # vx, vy = body.velocity
         l = body.velocity.length

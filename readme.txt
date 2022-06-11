@@ -4,11 +4,12 @@ Make the forthcoming asteroid in orbit of the earth using a rocket punch.
 Instructions:
 
 1. Every time an asteroid is hit by the earth, the earth will lose some of its health.
-2. Asteroid hit impact calculates the damage it deals with earth, which means the high-speed asteroid 
+2. Asteroid hit impact calculates the damage it deals with earth and shield, which means the high-speed asteroid 
 deals more damage.
 3. Every time earth or punch or shield is hit by an asteroid, the timer will reset.
 4. A shield is provided to help stop the asteroid from hitting the earth.
 5. Punch once assigned to a position, it can not be reassigned until it reaches back to earth.
+6. Punch has unlimited health.
 
 How to Play
 
