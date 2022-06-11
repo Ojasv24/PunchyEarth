@@ -120,7 +120,7 @@ class Game():
 
     def genrateasteroids(self):
         now = time.time()
-        if len(self.asteroid_group) >= self.asteroidNumber or (now - self.last_spawn_time) < 3:
+        if len(self.asteroid_group) >= self.asteroidNumber or (now - self.last_spawn_time) < 5:
             return
 
         colors = [(218, 165, 32),	(255, 69, 0), (124, 252, 0), (127, 255, 212), (255, 0, 255),

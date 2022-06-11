@@ -7,7 +7,7 @@ pygame.mixer.init()
 
 infoObject = pygame.display.Info()
 screenSize = (infoObject.current_w, infoObject.current_h)
-screen = pygame.display.set_mode(screenSize)
+screen = pygame.display.set_mode(screenSize, pygame.FULLSCREEN)
 
 bg = pygame.image.load("./assets/space.png").convert_alpha()
 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./assets/bg_music.mp3'), -1)
@@ -21,12 +21,13 @@ earthPostion = (screenSize[0] / 2, screenSize[1] / 2)
 earthGravityForce = 0.006
 earthSize = (200, 200)
 punchSize = (50, 90)
-asteroidNumber = 12
+asteroidNumber = 20
 
 exit = False
 clock = pygame.time.Clock()
 
-game = Game(screenSize, earthGravityForce, earthSize, punchSize, asteroidNumber)
+game = Game(screenSize, earthGravityForce,
+            earthSize, punchSize, asteroidNumber)
 page_look = Page(screenSize)
 
 while not exit:
