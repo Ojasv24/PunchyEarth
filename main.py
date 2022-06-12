@@ -21,7 +21,7 @@ earthPostion = (screenSize[0] / 2, screenSize[1] / 2)
 earthGravityForce = 0.006
 earthSize = (200, 200)
 punchSize = (50, 90)
-asteroidNumber = 20
+asteroidNumber = 15
 
 exit = False
 clock = pygame.time.Clock()

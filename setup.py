@@ -34,12 +34,12 @@ class Game():
         add_collision_handler(self.space, (EARTH, asteroid),
                               lambda *_: self.earth_asteroid_collsion_begin(
                                   *_),
-                              lambda arbiter, space, data: self.earth.reduce_health(max(arbiter.shapes[1].body.kinetic_energy / 100, 10)))
+                              lambda arbiter, space, data: self.earth.reduce_health(max(arbiter.shapes[1].body.kinetic_energy / 100, 5)))
 
         add_collision_handler(self.space, (SHEILD, asteroid),
                               lambda *_: self.shield_astorid_collision_begin(
                                   *_),
-                              lambda arbiter, space, data: self.shield.reduce_health(max(arbiter.shapes[1].body.kinetic_energy / 10000, 20)))
+                              lambda arbiter, space, data: self.shield.reduce_health(max(arbiter.shapes[1].body.kinetic_energy / 10000, 10)))
 
         self.earth_group = pygame.sprite.Group()
         self.earth = Earth(self.space, self.earthPostion, self.earthSize, 1)
