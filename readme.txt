@@ -1,25 +1,30 @@
 Goal:
-Make the forthcoming asteroid in orbit of the earth using a rocket punch.
+Defend Earth from forthcoming asteroid using your punch and shield.
+
+Instructions to run:
+1. To play,run python main.py
+
+How to Play
+
+1.Their is a health bars in the top left corner of your screen.Which indicates the health of earth and shield.
+2.Their is also a Timer in top right corner of your screen,which indicates how much time is left to win before it get reset.
+3. Click anywhere is the screen to punch in that direction
+4. Use keys 'W' and 'A' or 'Left key' and 'Right Key' to rotate the shield.
 
 Instructions:
 
 1. Every time an asteroid is hit by the earth, the earth will lose some of its health.
-2. Asteroid hit impact calculates the damage it deals with earth and shield, which means the high-speed asteroid 
+2. A shield is provided to help stop the asteroid from hitting the earth.
+3. Asteroid hit impact calculates the damage it deals with earth and shield, which means the high-speed asteroid 
 deals more damage.
-3. Every time earth or punch or shield is hit by an asteroid, the timer will reset.
-4. A shield is provided to help stop the asteroid from hitting the earth.
-5. Punch once assigned to a position, it can not be reassigned until it reaches back to earth.
+4. Every time earth or punch or shield is hit by an asteroid, the timer will reset.
+5. Punch once clicked to a position, it can not be reassigned until it reaches back to earth.
 6. Punch has unlimited health.
-
-How to Play
-
-1. To play,run python main.py
-2. Use your mouse to assign a position for the punch to move or hit 
-an asteroid.
-3. Use keys 'W' and 'A' or 'Left key' and 'Right Key' to rotate the shield.
+7. You will lose if earth health reaches zero.
 
 Win Condition
-
 Survive for 1 minute without:-
 1. Hitting an asteroid with the punch,
 2. getting earth or shield hit by an asteroid
+
+
