@@ -1,10 +1,10 @@
 Punchy Earth a Python Game
  =============
-Goal:
+Goal
 ---------------
 Defend Earth from forthcoming asteroids using your punch and shield.
 
-Instructions to run:
+Instructions to run
 ---------------
 1. To play, run python main.py
 
@@ -15,7 +15,7 @@ How to Play
 3. Click anywhere on the screen to punch in that direction
 4. Use keys 'W' and 'A' or 'Left key' and 'Right Key' to rotate the shield.
 
-Instructions:
+Instructions
 ---------------
 1. Every time an asteroid is hit by the earth, the earth will lose some of its health.
 2. A shield is provided to help stop the asteroid from hitting the earth.
@@ -36,3 +36,6 @@ Survive for 1 minute without:-
 ![image](https://user-images.githubusercontent.com/54352866/204125265-3ff98a6b-f7b2-41a1-93a2-ef2dcbb99da5.png)
 ![image](https://user-images.githubusercontent.com/54352866/204125270-f52f02e8-eee7-4946-9cd6-733987d3010f.png)
 
+Gameplay
+---------------
+https://www.youtube.com/watch?v=9jp1KspO6KE&t=9s
