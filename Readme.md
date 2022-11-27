@@ -38,4 +38,4 @@ Survive for 1 minute without:-
 
 Gameplay
 ---------------
-https://www.youtube.com/watch?v=9jp1KspO6KE&t=9s
+https://www.youtube.com/watch?v=9jp1KspO6KE
